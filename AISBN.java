@@ -17,11 +17,12 @@ public class AISBN{
 				n++;
 			}
 		}
-		if (summe%10 == (s.charAt(patat-1)-48)){
+		int a = Math.max((10-summe%10), summe%10);
+		if (a == (s.charAt(patat-1)-48)){
 			System.out.println("ISBN : " + s + " ist gültig!");
 		} else {
 			System.out.println("ISBN : " + s + " ist leider nicht gültig :( ");
-			s = s.substring(0,patat-1) + (summe%10);
+			s = s.substring(0,patat-1) + a;
 			System.out.println("Richtige ISBN waere : " + s);
 		}
 
