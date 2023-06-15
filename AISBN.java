@@ -11,11 +11,10 @@ public class AISBN{
 			} else {
 				if (n%2==0){
 					summe += (s.charAt(i)-48);
-					n++;
 				} else {
 					summe += ((s.charAt(i)-48)*3);
-					n++;
 				}
+				n++;
 			}
 		}
 		if (summe%10 == (s.charAt(patat-1)-48)){
