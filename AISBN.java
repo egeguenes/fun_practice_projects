@@ -2,6 +2,10 @@
 public class AISBN{
 	public static void main(String[] args) {
 		String s = args[0];
+		prove(s);
+	}	
+
+	public static void prove(String s) {
 		int n = 0;
 		int summe = 0;
 		int patat = s.length();
@@ -25,6 +29,5 @@ public class AISBN{
 			s = s.substring(0,patat-1) + a;
 			System.out.println("Richtige ISBN waere : " + s);
 		}
-
-	}	
+	}
 }
