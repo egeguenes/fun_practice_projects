@@ -33,7 +33,9 @@ public class Map{
 			sb.append(("+---------".repeat(groesse)).append("\n");
 			for (int j=0; j<groesse; j++) {
 				for (int k=0; k<groesse; k++) {
-					if (map[][])
+					if (map[][]) {
+						
+					}
 				}
 			}
 		}
@@ -95,7 +97,7 @@ public class Map{
 				if (chosen.getSouth()==unten.getNorth()) { 
 					punkte += 5;
 				} else {
-					punkte -=
+					punkte -= 2;
 				}
 			}
 		}

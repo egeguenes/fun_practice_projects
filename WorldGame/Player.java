@@ -5,19 +5,22 @@ public class Player{
 
 	Player(String name){ 
 		this.name = name;
-		punkte = 0;
-		for (int i=0; i<4; i++) {
-			spielerTerrain[i] = new Terrain();
-		}
+		this.punkte = 0;
+		spielerTerrain = new Terrain[4];
+		generateTiles();
 	}
  
 
 	public String showTiles() {
 		String result = "";
-    	for (int i = 0; i < 4; i++) {
+    	for (int i = 0; i < spilerTerrain.length(); i++) {
     	    result += spielerTerrain[i].print() + "\n";
     	}
     	return result;
+	}
+
+	public Terrain[] getTerrain() {
+		return spielerTerrain;
 	}
 
 
@@ -34,19 +37,28 @@ public class Player{
 	}
 
 	public void generateTiles() {
-		Terrain[] temp = new Terrain[spielerTerrain.length];
-		for (int i = 0; i < spielerTerrain.length; i++) {
-    		temp[i] = spielerTerrain[i];
-		}
-		for (int i=0; i<4; i++) {
-			spielerTerrain[i].generate();
-			while (spielerTerrain[i]==temp[i]) {
-				spielerTerrain[i].generate();
+		for (int i=0; i<spielerTerrain.length(); i++) {
+			Terrain newTerrain = new Terrain().generate();
+			while (isDuplicate(newTerrain)) {
+				newTerrain = new Terrain().generate();
 			}
+			spielerTerrain[i] = newTerrain;
 		}
 	}
 
+	private boolean isDuplicate(Terrain terrain) {
+		for (Terrain t : spielerTerrain) {
+			if (t!=null && t.equals(spielerTerrain)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public Terrain playTile(int num) {
-		return spielerTerrain[num];
+		if (num<=0 && num<spielerTerrain) {
+			return spielerTerrain[num];
+		}
+		return null;
 	}
 }
