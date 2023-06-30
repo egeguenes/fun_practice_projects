@@ -12,7 +12,6 @@ public class Tavsan{
                 type[i][j] = '-';
             }
         }
-
 		type[rnd.nextInt(20)][rnd.nextInt(20)] = 'd';
 		kAnzahl++;
 		runde++;

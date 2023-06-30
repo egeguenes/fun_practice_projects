@@ -7,7 +7,7 @@ public class KSim{
 		Random rnd = new Random();
 		Null(type);
 		Null(deneme);
-		type[rnd.nextInt(20)][rnd.nextInt(20)] = 'o';
+		type[rnd.nextInt(20)][rnd.nextInt(20)] = 'd';
 		int kAnzahl = 1;
 		int runde = 1;
 		//
@@ -19,7 +19,7 @@ public class KSim{
 		}
 		System.out.println("Runde : " + runde + " Kaninchen Anzahl : " + kAnzahl);
 		//
-		while (kAnzahl < 400){
+		while (kAnzahl < 400 && runde < 250){
 			runde++;
 			Wachsen(deneme, type);
 			Erwachsene(deneme, type);
@@ -93,7 +93,7 @@ public class KSim{
 					type[i][j] = 'd';
 				}
 				else if (deneme[i][j]==8){
-					type[i][j]='X';
+					type[i][j]='p';
 				}
 			}
 		}
