@@ -1,3 +1,5 @@
+// FizzBuzz algorithm und pflichtaufgabe
+
 import java.util.Scanner;
 
 public class FizzBuzz {

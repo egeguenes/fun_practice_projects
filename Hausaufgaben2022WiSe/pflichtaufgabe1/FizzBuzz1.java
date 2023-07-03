@@ -1,3 +1,5 @@
+// FizzBuzz Algorithm aber mit zusaetz Aufgaben!
+
 import java.util.Scanner;
 
 public class FizzBuzz1 {
