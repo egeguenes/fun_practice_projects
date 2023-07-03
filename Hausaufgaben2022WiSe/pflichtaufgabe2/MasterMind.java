@@ -1,4 +1,4 @@
-// ich hab auch was hindugefügt und dieses Code enthaeltet zurzeit keine zusaetzlichen Aufgaben!
+// ich hab auch was hinzugefügt und dieses Code enthaeltet zurzeit keine zusaetzlichen Aufgaben!
 
 import java.util.Scanner;
 import java.util.Random;
