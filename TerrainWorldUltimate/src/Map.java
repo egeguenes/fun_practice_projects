@@ -21,57 +21,64 @@ public class Map {
     }
 
     public void draw() {
+        // die ganze map-Matrize durch ASCII-Zeichen in einem sb-Object speichern und ausgeben
         StringBuilder sb = new StringBuilder();
-        for ( int i=0 ; i < size ; i++ ) {
-            sb.append("+---------".repeat(size)).append("+\n");
-            for ( int j=0 ; j < size ; j++ ) {
-                for ( int k=0 ; k < size ; k++ ) {
-                    sb.append("|");
-                    if (!isEmpty( i , k )) {
-                        sb.append(map[i][k].getRow(j));
+
+        for (int i = 0; i < this.size; i++) {// fuer jede Spalte in der map
+            sb.append("+---------".repeat(this.size)).append("+\n");
+            for (int j = 0; j < 5; j++) {// fuer jede Zeile im Terrain-Feld
+                for (int k = 0; k < this.size; k++) {// fuer jede Zeile in der map
+                    if (map[k][i] != null) {// wenn es ein Terrain-Feld in map[k][i] gibt
+                        String[] terrainZeilen = map[k][i].toString().split("\n");// die Terrain-Zeilen splitten und in einer String array speichern, ohne ein getRow() methode einsetzen zu muessen
+                        sb.append("|" + terrainZeilen[j]);// die entsprechende terrainZeile ausgeben
                     } else {
-                        sb.append("         ");
+                        sb.append("|         ");// wenn das Feld leer ist wird "|         " 5 mal ausgegeben
                     }
                 }
                 sb.append("|\n");
             }
         }
-        sb.append("+---------".repeat(size)).append("+\n");
+        sb.append("+---------".repeat(this.size)).append("+");
+
         System.out.println(sb.toString());
     }
 
     public boolean isFull() {
         for ( int i = 0 ; i < this.size ; i++ ) {
             for ( int j = 0 ; j < this.size ; j++ ) {
-                if ( isEmpty( i , j )) return false;
+                if ( isEmpty( i , j ))
+                    return false;
             }
         }
         return true;
     }
 
     public int bestFor(Player p) {
-        Terrain best = new Terrain();
-        int jBest = 0;
-        int kBest = 0;
+        int terrainNum = 0;
+        int xNum = 0;
+        int yNum = 0;
         int max = 0;
 
-        for ( int k=0 ; k < this.size ; k++ ) {
+        for ( int i=0 ; i < this.size ; i++ ) {
             for ( int j=0 ; j < this.size ; j++ ) {
-                for ( int i=0 ; i < p.getFelderAnzahl() ; i++ ) {
-                    if ( (placeTry( p.getTerrain(i) , j , k) > max) ) {
-                        max = (placeTry( p.getTerrain(i) , j , k ));
-                        best = p.getTerrain(i);
-                        jBest = j;
-                        kBest = k;
+                for ( int k=0 ; k < p.getFelderAnzahl() ; k++ ) {
+                    if ( isEmpty( i , j ) ) {
+                        if ( pointsFromPlace( p.getTerrain(k) , i , j ) > max ) {
+                            terrainNum = k;
+                            xNum = i;
+                            yNum = j;
+                            max = pointsFromPlace( p.getTerrain(k) , i , j );
+                        }
                     }
                 }
             }
         }
-        place( best , kBest , jBest );
+        System.out.println("coordinates : " + xNum + " , " + yNum);
+        place( p.getTerrain(terrainNum) , xNum , yNum );
         return max;
     }
 
-    public int placeTry( Terrain chosen , int x , int y) {
+    public int pointsFromPlace( Terrain chosen , int x , int y) {
         assert x >= 0 && x < this.size && y >= 0 && y < this.size;
         assert chosen != null;
 
@@ -132,6 +139,6 @@ public class Map {
     public void place( Terrain chosen , int xPos , int yPos) {
         assert (xPos >= 0 && xPos < this.size) && (yPos >= 0 && yPos < this.size);
         assert chosen != null;
-        map[yPos][xPos] = chosen;
+        map[xPos][yPos] = chosen;
     }
 }

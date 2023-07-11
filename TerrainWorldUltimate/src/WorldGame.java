@@ -4,10 +4,9 @@ import java.util.Random;
 public class WorldGame {
 
     private static Terrain chosenTile = null;
-    private static int tileNum = -1;
     private static int runde = 1;
-    private static int[] pp1 = new int[25];
-    private static int[] pp2 = new int[25];
+    private static int[] pp1 = new int[26];
+    private static int[] pp2 = new int[26];
     static Scanner scan = new Scanner(System.in);
     static Random rnd = new Random();
     static boolean turnFinished = false;
@@ -15,6 +14,7 @@ public class WorldGame {
     static Player player1;
     static Player player2;
     static Map map = new Map(5);
+    public static boolean flag = false;
 
     public static void main(String[] args) {
         System.out.println("Wilkommen zu Terrain World Ultimate ");
@@ -26,16 +26,17 @@ public class WorldGame {
             String difficulty = scan.nextLine().toUpperCase();
             if ( difficulty.equals("E") ) {
                 singlePlayerModeEasy();
+                endText();
             } else if ( difficulty.equals("H") ) {
                 singlePlayerModeHard();
+                endText();
             } else {
                 System.out.println("Spiel wurde beendet!\n");
                 return;
             }
-            werGewinnt( player1 , player2 );
         } else if ( s.equals("M") ) {
             multiPlayerMode();
-            werGewinnt( player1 , player2 );
+            endText();
         } else {
             System.out.println("\nDas Spiel wurde beendet!\nCiao!\n");
         }
@@ -54,12 +55,16 @@ public class WorldGame {
         map.draw();
 
         while (!map.isFull()) {
+            if ( runde%2==1 && flag ) {
+                currentPlayer = werGewinnt();
+            }
             System.out.println(currentPlayer.getName() + " ist Dran!");
             System.out.println("Verfügbare Kommande : points , show , choose[index] , place[index][index] , draw , help");
             turnFinished = false;
             turnMech( currentPlayer );
             currentPlayer = (currentPlayer == player1) ? player2 : player1;
             runde++;
+            flag = true;
         }
     }
 
@@ -75,6 +80,10 @@ public class WorldGame {
         Player currentPlayer = ( rnd.nextInt(2) == 1 ) ? player1 : player2;
 
         while ( !map.isFull() ) {
+            if ( runde%2==1 && flag ) {
+                currentPlayer = werGewinnt();
+            }
+            flag = true;
             System.out.println(currentPlayer.getName() + " ist Dran!");
             turnFinished = false;
             if ( currentPlayer==player1 ) {
@@ -105,6 +114,10 @@ public class WorldGame {
         Player currentPlayer = (rnd.nextInt(2) == 1) ? player1 : player2;
 
         while (!map.isFull()) {
+            if ( runde%2==1 && flag ) {
+                currentPlayer = werGewinnt();
+            }
+            flag = true;
             System.out.println(currentPlayer.getName() + " ist Dran!");
             turnFinished = false;
             if (currentPlayer == player1) {
@@ -118,7 +131,7 @@ public class WorldGame {
                     int yRandom = rnd.nextInt(5);
                     if ( map.isEmpty( xRandom , yRandom ) ) {
                         map.place( player2.getTerrain(tileRandom) , xRandom , yRandom );
-                        int punkteBotEasy = map.placeTry( player2.getTerrain(tileRandom) , xRandom , yRandom );
+                        int punkteBotEasy = map.pointsFromPlace( player2.getTerrain(tileRandom) , xRandom , yRandom );
                         System.out.println( player2.getName() + " hat " + punkteBotEasy + " punkte bekommen!");
                         player2.generateTiles();
                         map.draw();
@@ -133,6 +146,7 @@ public class WorldGame {
     }
 
     public static void turnMech(Player currentPlayer) {
+        int tileNum = -1;
         while ( !turnFinished ) {
             System.out.print(">");
             String kommand = scan.nextLine();
@@ -173,7 +187,7 @@ public class WorldGame {
                             if (xPos < 5 && xPos >= 0 && yPos < 5 && yPos >= 0) {
                                 if (map.isEmpty(xPos, yPos)) {
                                     map.place(chosenTile, xPos, yPos);
-                                    int pointsBekommen = map.placeTry(chosenTile, xPos, yPos);
+                                    int pointsBekommen = map.pointsFromPlace(chosenTile, xPos, yPos);
                                     System.out.println(currentPlayer.getName() + " hat " + pointsBekommen + " Punkte bekommen!");
                                     currentPlayer.addPoints(pointsBekommen);
                                     chosenTile = null;
@@ -211,23 +225,28 @@ public class WorldGame {
         }
     }
 
-    public static void werGewinnt( Player p1 , Player p2 ) {
+    public static Player werGewinnt() {
         if ( pp1[runde] > pp2[runde] ) {
-            System.out.println(p1.getName() + " ist der Gewinner!");
+            return player1;
         } else if ( pp1[runde] < pp2[runde] ) {
-            System.out.println(p2.getName() + " ist der Gewinner!");
+            return player2;
         } else {
             int temp = runde-1;
             while ( pp1[temp] == pp2[temp] ) {
                 if ( pp1[temp] > pp2[temp] ) {
-                    System.out.println(p1.getName() + " ist der Gewinner!");
-                    break;
+                    return player1;
                 } else if ( pp1[runde] < pp2[runde] ) {
-                    System.out.println(p2.getName() + " ist der Gewinner!");
-                    break;
+                    return player2;
                 }
+                temp--;
             }
         }
+        return player1;
+    }
+
+    public static void endText() {
+        String s = (werGewinnt() == player1) ? player1.getName() + " ist der Gewinner!" : player2.getName() + " ist der Gewinner!";
+        System.out.println(s);
     }
 
     public static String nameInput() {
