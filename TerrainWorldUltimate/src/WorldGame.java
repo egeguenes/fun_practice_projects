@@ -108,7 +108,7 @@ public class WorldGame {
 
         System.out.print("Player name : ");
         player1 = new Player(nameInput());
-        player2 = new Player("Bot Compi");
+        player2 = new Player("Bot Dummi");
         map.draw();
 
         Player currentPlayer = (rnd.nextInt(2) == 1) ? player1 : player2;

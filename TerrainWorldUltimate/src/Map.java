@@ -24,13 +24,12 @@ public class Map {
 
         StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < this.size; i++) {
+        for ( int i=0 ; i < this.size ; i++ ) {
             sb.append("+---------".repeat(this.size)).append("+\n");
-            for (int j = 0; j < 5; j++) {
-                for (int k = 0; k < this.size; k++) {
-                    if (map[k][i] != null) {
-                        String[] terrainZeilen = map[k][i].toString().split("\n");
-                        sb.append("|" + terrainZeilen[j]);
+            for ( int j=0 ; j < this.size ; j++ ) {
+                for ( int k=0 ; k < 5 ; k++ ) {
+                    if ( !isEmpty( k , i ) ) {
+                        sb.append("|").append(map[k][i].getRow(j));
                     } else {
                         sb.append("|         ");
                     }
@@ -38,10 +37,10 @@ public class Map {
                 sb.append("|\n");
             }
         }
-        sb.append("+---------".repeat(this.size)).append("+");
-
+        sb.append("+---------".repeat(this.size)).append("+\n");
         System.out.println(sb.toString());
     }
+
 
     public boolean isFull() {
         for ( int i = 0 ; i < this.size ; i++ ) {
