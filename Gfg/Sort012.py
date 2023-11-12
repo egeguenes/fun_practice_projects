@@ -1,3 +1,4 @@
+# i guess its a brute force algorithm to sort the numbers from 0 to 2 in an array
 def sort012(array , n):
 	counter0 = 0
 	counter1 = 0
