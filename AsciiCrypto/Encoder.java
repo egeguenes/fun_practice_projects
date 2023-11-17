@@ -6,12 +6,12 @@ public class Encoder {
 	}
 
 	public String encoder( String message ) {
-		String cipheredMessage = "";
+		StringBuilder cipheredMessage = new StringBuilder();
 		char[] characters = message.toCharArray();
-		for ( int i = 0 ; i < characters.length ; i++ ) {
-			cipheredMessage += (char) (( characters[i] + encoderOverlap ) % 256 ) + "";
-		}
-		return cipheredMessage;
+		for (int i = 0; i < characters.length; i++) {
+            cipheredMessage.append((char) ((characters[i] + encoderOverlap) % 65536));
+        }
+        return cipheredMessage.toString();
 	}
 
 	public int getEncoderOverlap() {

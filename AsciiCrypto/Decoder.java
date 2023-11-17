@@ -6,12 +6,12 @@ public class Decoder {
 	}
 
 	public String decoder( String cipheredMessage ) {
-		String result = "";
-		char[] messageChars = cipheredMessage.toCharArray();
-		for ( int i = 0 ; i < messageChars.length ; i++ ) {
-			result += (char) ((messageChars[i] - decoderOverlap) % 256) + "";
-		}
-		return result;
+		StringBuilder result = new StringBuilder();
+        char[] messageChars = cipheredMessage.toCharArray();
+        for (int i = 0; i < messageChars.length; i++) {
+            result.append((char) ((messageChars[i] - decoderOverlap) % 65536));
+        }
+        return result.toString();
 	}
 
 	public int getDecoderOverlap() {
