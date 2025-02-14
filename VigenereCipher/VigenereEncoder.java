@@ -14,7 +14,8 @@ public class VigenereEncoder {
 		assert key.length() < message.length();
 		char[] keyElements = key.toCharArray();
 		for ( int i = 0 ; i < message.length() - key.length() ; i++ ) {
-					
+			key += char[i];
+			
 		}
 	}
 }

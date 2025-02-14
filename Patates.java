@@ -1,30 +1,40 @@
 public class Patates {
+
     public static void main(String[] args) {
-        System.out.println(quasifriends(48,75));
-        System.out.println(quasifriends(31,12));
-        System.out.println(quasifriends(0,-3));
+        int[] a = {5,2,-5,1,3,-5,-2,4,0};
+        specialSort(a);
+        for ( int i=0 ; i < a.length ; i++ ) {
+            System.out.print(a[i] + " ");
+        }
     }
 
-    static boolean quasifriends( int n , int m ) {
-        if ( m <= 0 || n <= 0 ) {
-            throw new IllegalArgumentException("Eingabe Fehler");
+    static void specialSort( int[] a ) {
+        if ( a.length <= 0 ) {
+            throw new IllegalArgumentException();
         }
-        int nVersuch = 0;
-        int mVersuch = 0;
-        for ( int i = 2 ; i < n ; i++ ) {
-            if ( n % i == 0 ) {
-                nVersuch += i;
-            }
-        }
-        for ( int i = 2 ; i < m ; i++ ) {
-            if ( m % i == 0 ) {
-                mVersuch += i;
-            }
-        }
-        if ( (nVersuch==m) && (mVersuch==n) ) {
-            return true;
-        }
-        return false;
-    }
 
+        int n = 0;
+        int[] newArray = new int[a.length];
+        for ( int i = 0 ; i < newArray.length ; i++ ) {
+            if ( a[i] == 0 ) {
+                newArray[n] = 0;
+                n++;
+            }
+        }
+        for ( int b = n ; b < a.length ; b++ ) {
+            for ( int c = b ; c < a.length - 1 ; c++ ) {
+                if ( a[b] <= a[c+1] ) {
+                    newArray[n] = a[b];
+                    n++;
+                }
+            }
+        }
+        for ( int i = 0 ; i < a.length ; i++ ) {
+            if ( newArray[i] == (-1 * newArray[i+1]) && ( newArray[i+1] < newArray[i]) ) {
+                newArray[i] = newArray[i+1];
+                newArray[i+1] = -1 * newArray[i];
+            }
+        }
+        a = newArray;
+    }
 }
