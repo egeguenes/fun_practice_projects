@@ -120,8 +120,10 @@ public class GamePanel extends JPanel implements Runnable {
         if (!mouse.pressed) {
             if (activeP != null) {
                 if (validSquare) {
+                    copyPieces(simPieces, pieces);
                     activeP.updatePosition();
                 } else {
+                    copyPieces(pieces, simPieces);
                     activeP.resetPosition();
                     activeP = null;
                 }
@@ -133,6 +135,8 @@ public class GamePanel extends JPanel implements Runnable {
         canMove = false;
         validSquare = false;
 
+        copyPieces(pieces, simPieces);
+
         activeP.x = mouse.x - Board.HALF_SQUARE_SIZE;
         activeP.y = mouse.y - Board.HALF_SQUARE_SIZE;
         activeP.col = activeP.getCol(activeP.x);
@@ -140,6 +144,11 @@ public class GamePanel extends JPanel implements Runnable {
 
         if (activeP.canMove(activeP.col, activeP.row)) {
             canMove = true;
+
+            if (activeP.hittingP != null) {
+                simPieces.remove(activeP.hittingP.getIndex());
+            }
+
             validSquare = true;
         }
     }
@@ -158,11 +167,12 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         if (activeP != null ) {
-            g2.setColor(Color.white);
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
-            g2.fillRect(activeP.col*Board.SQUARE_SIZE, activeP.row*Board.SQUARE_SIZE, Board.SQUARE_SIZE, Board.SQUARE_SIZE);
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
-
+            if (canMove) {
+                g2.setColor(Color.white);
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+                g2.fillRect(activeP.col*Board.SQUARE_SIZE, activeP.row*Board.SQUARE_SIZE, Board.SQUARE_SIZE, Board.SQUARE_SIZE);
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+            }
             activeP.draw(g2);
         }
     }

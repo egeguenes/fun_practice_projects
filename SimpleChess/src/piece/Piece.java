@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 
 import main.Board;
+import main.GamePanel;
 
 public class Piece {
 
@@ -14,6 +15,7 @@ public class Piece {
     public int x, y;
     public int col, row, preCol, preRow;
     public int color;
+    public Piece hittingP;
 
     public Piece(int color, int col, int row) {
         this.color = color;
@@ -51,6 +53,15 @@ public class Piece {
         return (y + Board.HALF_SQUARE_SIZE) / Board.SQUARE_SIZE;
     }
 
+    public int getIndex() {
+        for (int index=0; index<GamePanel.simPieces.size(); index++) {
+            if (GamePanel.simPieces.get(index) == this) {
+                return index;
+            }
+        }
+        return 0;
+    }
+
     public void updatePosition() {
         x = getX(col);
         y = getY(row);
@@ -71,6 +82,82 @@ public class Piece {
 
     public boolean isWithinBoard(int targetCol, int targetRow) {
         return (targetCol >= 0 && targetCol <= 7 && targetRow >= 0 && targetRow <= 7);
+    }
+
+    public boolean isSameSquare(int targetCol, int targetRow) {
+        return (preCol == targetCol && preRow == targetRow);
+    }
+
+    public Piece getHittingP(int targetCol, int targetRow) {
+        for (Piece piece : GamePanel.simPieces) {
+            if (piece.col == targetCol && piece.row == targetRow && piece != this) {
+                return piece;
+            }
+        }
+        return null;
+    }
+
+    public boolean isValidSquare(int targetCol, int targetRow) {
+        hittingP = getHittingP(targetCol, targetRow);
+        if (hittingP == null) {
+            return true;
+        } else {
+            if (hittingP.color != this.color) {
+                return true;
+            }
+            else {
+                hittingP = null;
+            }
+        }
+        return false;
+    }
+
+    // you wont use it now but might be handy
+    public boolean piecesSameSquare(int targetCol, int targetRow, Piece other) {
+        return (targetCol == other.col && targetRow == other.row);
+    }
+
+    public boolean pieceIsOnStraightLine(int targetCol, int targetRow) {
+        // moving left
+        for (int c=preCol-1; c>targetCol; c++) {
+            for (Piece piece : GamePanel.simPieces) {
+                if (piece.col == c && piece.row == targetRow) {
+                    hittingP = piece;
+                    return true;
+                }
+            }
+        }
+
+        // right
+        for (int c=preCol+1; c<targetCol; c++) {
+            for (Piece piece : GamePanel.simPieces) {
+                if (piece.col == c && piece.row == targetRow) {
+                    hittingP = piece;
+                    return true;
+                }
+            }
+        }
+
+        // downwards
+        for (int r=preRow+1; r<targetRow; r++) {
+            for (Piece piece : GamePanel.simPieces) {
+                if (piece.row == r && piece.col == targetCol) {
+                    hittingP = piece;
+                    return true;
+                }
+            }
+        }
+
+        for (int r=preRow-1; r>targetRow; r++) {
+            for (Piece piece : GamePanel.simPieces) {
+                if (piece.row == r && piece.col == targetCol) {
+                    hittingP = piece;
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public void draw(Graphics2D g2) {
