@@ -1,9 +1,0 @@
-/**
- * 
- */
-/**
- * @author egunes
- *
- */
-module Zoo {
-}
