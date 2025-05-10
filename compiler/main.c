@@ -27,7 +27,21 @@ typedef struct {
 typedef struct {
     TypeLiteral type;
     int value;
-} TokeLiteral;
+} TokenLiteral;
+
+TokenLiteral generate_number(char current, FILE *file) {
+    TokenLiteral token;
+    token.type = INT;
+    int value = 0;
+    while (isdigit(current) && current != EOF) {
+        if (!isdigit(current)) break;
+        value += (int) current - '0';
+        printf("%c", current);
+        current = fgetc(file);
+    }
+    token.value = value;
+    return token;
+}
 
 void lexer(FILE *file) {
     char current = fgetc(file);
@@ -40,7 +54,10 @@ void lexer(FILE *file) {
         } else if (current == ')') {
             printf("FOUND CLOSING BRACKET\n");
         } else if (isdigit(current)) {
-            printf("FOUND DIGIT: %d\n", (int)current - 48);
+            TokenLiteral test_token = generate_number(current, file);
+            test_token = generate_number(current, file);
+            printf("Test token value %d", test_token.value);
+            // printf("FOUND DIGIT: %d\n", (int)current - 48);
         } else if (isalpha(current)) {
             printf("FOUND CHARACTER: %c\n", current);
         }
