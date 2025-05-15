@@ -1,0 +1,3 @@
+/Users/egunes/github_intern/fun_practice_projects/compiler/build/CMakeFiles/compiler.dir
+/Users/egunes/github_intern/fun_practice_projects/compiler/build/CMakeFiles/edit_cache.dir
+/Users/egunes/github_intern/fun_practice_projects/compiler/build/CMakeFiles/rebuild_cache.dir
